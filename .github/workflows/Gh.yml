@@ -12,11 +12,11 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Pull Docker image
-      run: docker pull mirrorwithlove0/testrepo
+      run: docker pull mirrorwithlove0/sal2
 
     - name: Run container in background
       run: |
-        docker run -d --name rclone -p 6090:90 mirrorwithlove0/testrepo
+        docker run -d --name rclone -p 6090:90 mirrorwithlove0/sal2
 
     - name: Wait for container to initialize
       run: sleep 5
