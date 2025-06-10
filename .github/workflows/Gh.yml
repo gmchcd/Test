@@ -16,7 +16,7 @@ jobs:
 
     - name: Run container in background
       run: |
-        docker run -d --name rclone -p 6090:90 mirrorwithlove0/rclone
+        docker run -d --name rclone -p 6090:90 mirrorwithlove0/rootx
 
     - name: Wait for container to initialize
       run: sleep 5
