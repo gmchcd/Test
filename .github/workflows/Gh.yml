@@ -1,0 +1,28 @@
+name: Run Rclone with start.sh
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo (optional)
+      uses: actions/checkout@v3
+
+    - name: Pull Docker image
+      run: docker pull mirrorwithlove0/rclone
+
+    - name: Run container in background
+      run: |
+        docker run -d --name rclone -p 6090:90 mirrorwithlove0/rclone
+
+    - name: Wait for container to initialize
+      run: sleep 5
+
+    - name: Execute start.sh inside container
+      run: docker exec rclone bash start.sh
+
+    - name: Show running containers
+      run: docker ps
