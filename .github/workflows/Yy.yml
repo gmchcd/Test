@@ -1,0 +1,29 @@
+name: Run Rclone with start.sh safely
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Pull Docker image
+      run: docker pull mirrorwithlove0/zero
+
+    - name: Run container in background
+      run: |
+        docker run -d --name rclone -p 6090:90 mirrorwithlove0/zero tail -f /dev/null
+
+    - name: Cleanup SQLite session lock files (optional but recommended)
+      run: |
+        docker exec rclone bash -c 'find / -type f -name "*.session-shm" -o -name "*.session-wal" -o -name "*.session-journal" -delete || true'
+
+    - name: Run start.sh inside container
+      run: docker exec rclone bash start.sh
+
+    - name: Show running container logs
+      run: docker logs rclone
